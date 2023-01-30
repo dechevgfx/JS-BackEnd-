@@ -1,3 +1,18 @@
 {
-    "cubes": []
+    "cubes": [
+        {
+            "name": "az",
+            "description": "sd",
+            "imageUrl": "sd",
+            "difficultyLevel": "1",
+            "id": 1
+        },
+        {
+            "name": "ti",
+            "description": "ss",
+            "imageUrl": "ss",
+            "difficultyLevel": "5",
+            "id": 2
+        }
+    ]
 }
