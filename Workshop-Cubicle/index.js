@@ -1,22 +1,17 @@
 const express = require("express");
 const config = require("./config/config");
-
+const routes = require("./config/routes")
 const setUpViewEngine = require("./config/viewEngine");
 
 const app = express();
-setUpViewEngine(app)
+setUpViewEngine(app);
 
-app.use(express.static("./static"))
-
-app.get("/", (req, res) => {
-    res.render("index");
-});
-
-app.get("/about", (req, res) => {
-    res.render("about");
-});
+app.use(express.static("./static"));
+app.use(routes);
 
 app.listen(
     config.development.port,
-    console.log(`Listening on port ${config.development.port}! Now its up to you...`),
+    console.log(
+        `Listening on port ${config.development.port}! Now its up to you...`,
+    ),
 );
