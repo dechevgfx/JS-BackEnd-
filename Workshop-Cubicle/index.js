@@ -9,8 +9,13 @@ setUpViewEngine(app)
 app.use(express.static("./static"))
 
 app.get("/", (req, res) => {
-    res.render("index", { layout: false });
+    res.render("index");
 });
+
+app.get("/about", (req, res) => {
+    res.render("about");
+});
+
 app.listen(
     config.development.port,
     console.log(`Listening on port ${config.development.port}! Now its up to you...`),
