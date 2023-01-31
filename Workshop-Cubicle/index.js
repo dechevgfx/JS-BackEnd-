@@ -1,4 +1,7 @@
+const database = require("./config/database");
+
 const express = require("express");
+
 const config = require("./config/config");
 const routes = require("./config/routes");
 const setUpViewEngine = require("./config/viewEngine");
@@ -10,9 +13,13 @@ app.use(express.static("./static"));
 app.use(express.urlencoded({ extended: false }));
 app.use(routes);
 
-app.listen(
-    config.development.port,
-    console.log(
-        `Listening on port ${config.development.port}! Now its up to you...`,
-    ),
-);
+database()
+    .then(() =>
+        app.listen(
+            config.port,
+            console.log(
+                `Listening on port ${config.port}! Now its up to you...`,
+            ),
+        ),
+    )
+    .catch((err) => console.log(err));
