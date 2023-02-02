@@ -1,25 +1,25 @@
-const database = require("./config/database");
-
 const express = require("express");
+const cookieParser = require("cookie-parser");
 
-const config = require("./config/config");
 const routes = require("./config/routes");
-const setUpViewEngine = require("./config/viewEngine");
+const config = require("./config/config");
+const authMiddleware = require("./middleware/authMiddleware");
+const setupViewEngine = require("./config/viewEngine");
+const DB = require("./config/database");
 
 const app = express();
-setUpViewEngine(app);
+setupViewEngine(app);
 
 app.use(express.static("./static"));
+app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
+app.use(authMiddleware.authentication);
 app.use(routes);
 
-database()
+DB()
     .then(() =>
-        app.listen(
-            config.port,
-            console.log(
-                `Listening on port ${config.port}! Now its up to you...`,
-            ),
+        app.listen(config.port, () =>
+            console.log(`Server is running on port ${config.port}...`),
         ),
     )
-    .catch((err) => console.log(err));
+    .catch((err) => console.error(err.message));

@@ -1,4 +1,5 @@
-const Cube = require("../models/Cube")
+const Cube = require("../models/Cube");
+const User = require("../models/User");
 
 exports.getHomePage = async (req, res) => {
     const { search, from, to } = req.query;
@@ -21,7 +22,7 @@ exports.getHomePage = async (req, res) => {
             (cube) => Number(cube.difficultyLevel) <= Number(to),
         );
     }
-    console.log(cubes);
+    console.log(cubes, req.user);
 
     res.render("index", { cubes, search, from, to });
 };

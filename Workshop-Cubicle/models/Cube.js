@@ -1,35 +1,6 @@
-// const fs = require("fs");
-// const path = require("path");
-// const database = require("../config/database");
+const mongoose = require('mongoose');
 
-// class Cube {
-//     constructor(name, description, imageUrl, difficultyLevel) {
-//         this.name = name;
-//         this.description = description;
-//         this.imageUrl = imageUrl;
-//         this.difficultyLevel = difficultyLevel;
-//     }
-
-//     static save(cube) {
-//         if (database.cubes.length == 0) {
-//             cube.id = 1;
-//         } else {
-//             cube.id = database.cubes[database.cubes.length - 1].id + 1;
-//         }
-//         database.cubes.push(cube);
-//         const jsonData = database;
-//         fs.writeFileSync(
-//             path.resolve(__dirname, "../config/database.json"),
-//             jsonData,
-//         ); //
-//     }
-// }
-
-// module.exports = Cube;
-
-const { Schema, model } = require("mongoose");
-
-const cubeSchema = new Schema({
+const cubeSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
@@ -37,12 +8,17 @@ const cubeSchema = new Schema({
     description: {
         type: String,
         required: true,
-        maxLength: 50,
+        maxLength: 50, // check real length
     },
     imageUrl: {
         type: String,
         required: true,
-        //add https
+        validate: {
+            validator: function (value) {
+                return value.startsWith('http://') || value.startsWith('https://');
+            },
+            message: 'URL is invalid!'
+        }
     },
     difficultyLevel: {
         type: Number,
@@ -50,7 +26,16 @@ const cubeSchema = new Schema({
         max: 6,
         min: 1,
     },
+    accessories: [{
+        type: mongoose.Types.ObjectId,
+        ref: 'Accessory'
+    }],
+    owner: {
+        type: mongoose.Types.ObjectId,
+        ref: 'User'
+    }
 });
 
-const Cube = model("Cube", cubeSchema);
+const Cube = mongoose.model('Cube', cubeSchema);
+
 module.exports = Cube;
